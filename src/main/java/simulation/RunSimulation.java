@@ -66,18 +66,36 @@ public class RunSimulation {
 				}
 			}
 		}
-		//set bike and walk to be allowed on non-motorways and non-trunk network links? toDo confirm for network mode
+		//set bike to be allowed on non-motorways and non-trunk network links? toDo confirm for network mode
 		//important to put it after loading scenario or it would not really show an effect
 
+		//set bike and walk on car roads since those are connected properly
+		for (Link link : scenario.getNetwork().getLinks().values()) {
+			
+			if (link.getAllowedModes().contains("car")) {
+				//Add walk or bike to all links
+				Set<String> allowedModes = new HashSet<>(link.getAllowedModes());
+				allowedModes.add(TransportMode.bike);
+				link.setAllowedModes(allowedModes);
+			}
+
+		}
+		
+		//ToDo network needs to be filtered properly for bike and then cleaned
 		/*for (Link link : scenario.getNetwork().getLinks().values()) {
-			if (link.getAttributes().getAttribute("osm:way:highway").equals("motorway") |
-					link.getAttributes().getAttribute("osm:way:highway").equals("trunk")) {
+			*//*if (//link.getAttributes().getAttribute("osm:way:highway").equals("motorway") |
+					//link.getAttributes().getAttribute("osm:way:highway").equals("trunk") |
+				//not an artificial pt link
+					link.getAttributes().getAttribute("osm:way:access")==null ? true : link.getAttributes().getAttribute("osm:way:access").equals("no")
+			) {
 				continue;
 			}
-			//Add walk or bike to links whose osm attributes are neither motorway or trunk
+			if (link.getAttributes().getAttribute("osm:way:access")==null ? true : link.getAttributes().getAttribute("osm:way:access").equals("no")) {
+				continue;
+			}*//*
+			//Add bike to links whose osm attributes are neither motorway or trunk
 			Set<String> allowedModes = new HashSet<>(link.getAllowedModes());
 			allowedModes.add(TransportMode.bike);
-			allowedModes.add(TransportMode.walk);
 			link.setAllowedModes(allowedModes);
 
 		}*/
