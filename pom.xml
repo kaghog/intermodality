@@ -46,7 +46,7 @@
 
     </dependencies>
 
-   <!-- <profiles>
+   <profiles>
         <profile>
             <id>standalone</id>
             <build>
@@ -83,6 +83,6 @@
                 </plugins>
             </build>
         </profile>
-    </profiles>-->
+    </profiles>
 
 </project>

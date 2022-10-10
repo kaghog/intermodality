@@ -15,20 +15,22 @@ import org.matsim.core.utils.io.IOUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class CreateTripBasedPopulation {
     public static void main(String[] args)throws IOException, CommandLine.ConfigurationException {
 
-        CommandLine cmd = (new CommandLine.Builder(args))
+    	CommandLine cmd = (new CommandLine.Builder(args))
                 .requireOptions("input-path", "output-path")
                 .build();
 
-        String population = cmd.getOptionStrict("input-path");
-        String outputfile = cmd.getOptionStrict("output-path");
-
-        /*String population = "/home/kaghog/projects/scenarios/zurich/zurich_population_1pct.xml.gz";
-        String outputfile = "/home/kaghog/projects/scenarios/zurich/zurich_population_1pct_ptTripsgreater1km.xml.gz";*/
+		
+		 String population = cmd.getOptionStrict("input-path"); String outputfile =
+		 cmd.getOptionStrict("output-path");
+		 
 
 
         Config config = ConfigUtils.createConfig();
@@ -78,25 +80,12 @@ public class CreateTripBasedPopulation {
                         newPerson.addPlan(p);
 
                         //add the person attributes
-                        newPerson.getAttributes().putAttribute("age", person.getAttributes().getAttribute("age"));
-                        newPerson.getAttributes().putAttribute("bikeAvailability", person.getAttributes().getAttribute("bikeAvailability"));
-                        newPerson.getAttributes().putAttribute("carAvail", person.getAttributes().getAttribute("carAvail"));
-                        newPerson.getAttributes().putAttribute("employed", person.getAttributes().getAttribute("employed"));
-                        newPerson.getAttributes().putAttribute("hasLicense", person.getAttributes().getAttribute("hasLicense"));
-                        newPerson.getAttributes().putAttribute("home_x", person.getAttributes().getAttribute("home_x"));
-                        newPerson.getAttributes().putAttribute("home_y", person.getAttributes().getAttribute("home_y"));
-                        newPerson.getAttributes().putAttribute("isCarPassenger", person.getAttributes().getAttribute("isCarPassenger"));
-                        newPerson.getAttributes().putAttribute("isOutside", person.getAttributes().getAttribute("isOutside"));
-                        newPerson.getAttributes().putAttribute("mzHeadId", person.getAttributes().getAttribute("mzHeadId"));
-                        newPerson.getAttributes().putAttribute("mzPersonId", person.getAttributes().getAttribute("mzPersonId"));
-                        newPerson.getAttributes().putAttribute("ptHasGA", person.getAttributes().getAttribute("ptHasGA"));
-                        newPerson.getAttributes().putAttribute("ptHasHalbtax", person.getAttributes().getAttribute("ptHasHalbtax"));
-                        newPerson.getAttributes().putAttribute("ptHasStrecke", person.getAttributes().getAttribute("ptHasStrecke"));
-                        newPerson.getAttributes().putAttribute("ptHasVerbund", person.getAttributes().getAttribute("ptHasVerbund"));
-                        newPerson.getAttributes().putAttribute("spRegion", person.getAttributes().getAttribute("spRegion"));
-                        newPerson.getAttributes().putAttribute("statpopHouseholdId", person.getAttributes().getAttribute("statpopHouseholdId"));
-                        newPerson.getAttributes().putAttribute("statpopPersonId", person.getAttributes().getAttribute("statpopPersonId"));
-
+                        Map<String, Object> attributes = person.getAttributes().getAsMap();
+                        
+                        for (Entry<String, Object> entry: attributes.entrySet()) {
+                        	newPerson.getAttributes().putAttribute(entry.getKey(), entry.getValue());
+                        }
+               
                         //add original personID
                         newPerson.getAttributes().putAttribute("origPersonId", person.getId().toString());
 
@@ -108,7 +97,7 @@ public class CreateTripBasedPopulation {
             }
         }
 
-        new PopulationWriter(newPop).writeV4(outputfile);
+        new PopulationWriter(newPop).write(outputfile);
 
         System.out.println("Finished");
 
