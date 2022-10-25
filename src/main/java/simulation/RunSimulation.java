@@ -49,6 +49,9 @@ public class RunSimulation {
 
 		SwitzerlandConfigurator.configureScenario(scenario);
 		ScenarioUtils.loadScenario(scenario);
+		
+		//add household attributes to scenario such as bike availability
+		SwitzerlandConfigurator.adjustScenario(scenario);
 
 
 		// Adjust for person filter attributes in the SRR configuration for bikes
@@ -100,7 +103,7 @@ public class RunSimulation {
 
 		}*/
 
-		SwitzerlandConfigurator.adjustScenario(scenario);
+
 
 		Controler controller = new Controler(scenario);
 		controller.addOverridingModule(new SwissRailRaptorModule());
