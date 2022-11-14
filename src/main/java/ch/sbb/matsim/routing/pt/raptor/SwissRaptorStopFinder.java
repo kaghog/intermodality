@@ -1,6 +1,17 @@
 package ch.sbb.matsim.routing.pt.raptor;
 
-import ch.sbb.matsim.config.SwissRailRaptorConfigGroup;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Identifiable;
@@ -18,15 +29,11 @@ import org.matsim.core.population.routes.RouteUtils;
 import org.matsim.core.router.RoutingModule;
 import org.matsim.core.utils.collections.QuadTree;
 import org.matsim.core.utils.geometry.CoordUtils;
-import org.matsim.core.utils.misc.OptionalTime;
 import org.matsim.facilities.Facility;
 import org.matsim.pt.transitSchedule.api.TransitStopFacility;
-import simulation.SimulationParameter;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-import java.util.*;
-import java.util.stream.Collectors;
+import ch.sbb.matsim.config.SwissRailRaptorConfigGroup;
+import simulation.SimulationParameter;
 
 /**
  * @author kaghog, @mbalac created on 16.04.2021
@@ -181,18 +188,22 @@ public class SwissRaptorStopFinder implements RaptorStopFinder {
 			}
 
 
+				
+			double searchRadius = Math.min(paramset.getInitialSearchRadius(), paramset.getMaxRadius());
+			
+			
+			//@kaghog configurable search distance for non walk modes
 			double distance = CoordUtils.calcEuclideanDistance(fromFacility.getCoord(), toFacility.getCoord());
-
-			//@kaghog configurable search distance
 			double searchFactor = simulationParams.getIntermodalSearchFactor();
-			double searchRadius = Math.min(searchFactor * distance, paramset.getInitialSearchRadius());
+			if (!mode.equals(TransportMode.walk)) {
+				searchRadius = Math.min(searchFactor * distance, paramset.getInitialSearchRadius());
+			}
+			
 			if (filteredStopsQT == null)
 				System.out.println(stopFilterAttribute + " " + stopFilterValue);
 			Collection<TransitStopFacility> stopFacilities = filteredStopsQT.getDisk(x, y, searchRadius);
 
-			//@kaghog when the search distance factor makes the search radius too small and stops do not turn up for walk
-			//the nearest stop is selected for walk.
-
+			//@kaghog, the nearest stop is only selected for walk when there is no facility within search radius configured.
 			if (stopFacilities.size() < 2 && mode.equals(TransportMode.walk)) {
 				TransitStopFacility nearestStop = filteredStopsQT.getClosest(x, y);
 				double nearestDistance = CoordUtils.calcEuclideanDistance(facility.getCoord(), nearestStop.getCoord());

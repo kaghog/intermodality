@@ -1,13 +1,17 @@
 package simulation.utils;
 
+import java.util.List;
+
 import org.matsim.api.core.v01.Id;
 import org.matsim.api.core.v01.Scenario;
-import org.matsim.api.core.v01.population.*;
+import org.matsim.api.core.v01.population.Leg;
+import org.matsim.api.core.v01.population.Person;
+import org.matsim.api.core.v01.population.Plan;
+import org.matsim.api.core.v01.population.Population;
+import org.matsim.api.core.v01.population.PopulationFactory;
 import org.matsim.core.population.PopulationUtils;
 import org.matsim.core.router.TripStructureUtils;
 import org.matsim.core.utils.geometry.CoordUtils;
-
-import java.util.List;
 
 /**
  * @author kaghog created on 13.09.2022
@@ -22,7 +26,7 @@ public class AdjustPopulation {
         String filterValue = "true";
         for (final Person person : scenario.getPopulation().getPersons().values()) {
 
-            Boolean hasbike = !(person.getAttributes().getAttribute("bikeAvailability").toString().equals("FOR_NONE"));
+        	Boolean hasbike = !(person.getAttributes().getAttribute("bikeAvailability").toString().equals("FOR_NONE"));
             Boolean hasPtSubscription = (boolean) person.getAttributes().getAttribute("ptHasGA") ||
                     (boolean) person.getAttributes().getAttribute("ptHasHalbtax") ||
                     (boolean) person.getAttributes().getAttribute("ptHasStrecke") ||

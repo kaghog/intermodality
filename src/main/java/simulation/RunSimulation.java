@@ -1,9 +1,8 @@
 package simulation;
 
-import ch.sbb.matsim.config.SwissRailRaptorConfigGroup;
-import ch.sbb.matsim.routing.pt.raptor.*;
-//import intermodal.SwissIntermodalModule;
-import intermodal.SwissIntermodalModule;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eqasim.core.components.config.EqasimConfigGroup;
 import org.eqasim.core.simulation.mode_choice.EqasimModeChoiceModule;
 import org.eqasim.switzerland.SwitzerlandConfigurator;
@@ -19,11 +18,15 @@ import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.scenario.ScenarioUtils;
-import simulation.utils.AdjustPopulation;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import ch.sbb.matsim.config.SwissRailRaptorConfigGroup;
+import ch.sbb.matsim.routing.pt.raptor.RaptorIntermodalAccessEgress;
+import ch.sbb.matsim.routing.pt.raptor.RaptorStopFinder;
+import ch.sbb.matsim.routing.pt.raptor.SwissRailRaptorModule;
+import ch.sbb.matsim.routing.pt.raptor.SwissRaptorIntermodalAccessEgress;
+import ch.sbb.matsim.routing.pt.raptor.SwissRaptorStopFinder;
+import intermodal.SwissIntermodalModule;
+import simulation.utils.AdjustPopulation;
 
 public class RunSimulation {
 	static public void main(String[] args) throws ConfigurationException {

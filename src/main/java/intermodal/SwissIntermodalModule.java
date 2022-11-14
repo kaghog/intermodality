@@ -1,14 +1,15 @@
 package intermodal;
 
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import java.io.File;
+
 import org.eqasim.core.components.config.EqasimConfigGroup;
 import org.eqasim.core.simulation.mode_choice.AbstractEqasimExtension;
 import org.eqasim.core.simulation.mode_choice.ParameterDefinition;
 import org.eqasim.core.simulation.mode_choice.parameters.ModeParameters;
 import org.matsim.core.config.CommandLine;
 
-import java.io.File;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 
 public class SwissIntermodalModule extends AbstractEqasimExtension {
 

@@ -1,9 +1,9 @@
 package ch.sbb.matsim.routing.pt.raptor;
 
+import java.util.List;
+
 import org.matsim.api.core.v01.population.Person;
 import org.matsim.facilities.Facility;
-
-import java.util.List;
 
 /**
  * Find potential stops for access or egress, based on a start or end coordinate.
